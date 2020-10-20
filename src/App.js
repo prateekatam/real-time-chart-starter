@@ -69,9 +69,7 @@ const RealTimeChart = ({ className, ...rest }) => {
             variant="h3"
           >
             {
-              data[data.length - 1] === 0
-                ? data[data.length - 2]
-                : data[data.length - 1]
+              data[data.length - 1]
             }
           </Typography>
         )}
