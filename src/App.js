@@ -23,46 +23,16 @@ const BASEURL = "http://localhost:4000";
 
 const RealTimeChart = ({ className, ...rest }) => {
   const classes = useStyles();
-  // const [data, setData] = useState([
-  //   136,
-  //   176,
-  //   116,
-  //   195,
-  //   98,
-  //   136,
-  //   145,
-  //   166,
-  //   167,
-  //   183, 
-  //   111
-  // ]);
 
-  const [data, setData] = useState([]);
-  const [labels, setLabels] = useState([]);
-
-  // const labels = data.map((value, i) => i);
-
-  const getRandomInt = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-   
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
+  const [data, setData] = useState({});
+  // const [labels, setLabels] = useState([]);
 
   const getData = async () => {
     await axios.get(BASEURL+"/shearerpos").then((res) =>  {
       console.log(res)
-      setData(res.data.data)
-      setLabels(res.data.labels)
+      setData({"data": res.data.data, "labels": res.data.labels})
+      // setLabels(res.data.labels)
     })
-    // setData((prevData) => {
-    //   const newData = [...prevData];
-    //   const random = getRandomInt(100, 200);
-    //   newData.shift();
-    //   newData.push(random);
-
-    //   return newData;
-    // })
   };
 
   useEffect(() => {
@@ -80,8 +50,6 @@ const RealTimeChart = ({ className, ...rest }) => {
           justifyContent="center"
         >
           <Card
-      // className={clsx(classes.root, className)}
-      // {...rest}
     >
       <CardHeader
         action={(
@@ -99,8 +67,8 @@ const RealTimeChart = ({ className, ...rest }) => {
         title="Active users"
       />
       <Chart
-        data={data}
-        labels={labels}
+        data={data.data}
+        labels={data.labels}
       />
     </Card>
  

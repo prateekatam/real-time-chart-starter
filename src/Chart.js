@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Bar, Line } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import { makeStyles, useTheme } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
@@ -55,6 +55,12 @@ const Chart = ({
     scales: {
       xAxes: [
         {
+          type: 'time',
+          time: {
+              displayFormats: {
+                  hour: 'h:mm a'
+              }
+          },
           gridLines: {
             display: true,
             drawBorder: false
@@ -72,7 +78,9 @@ const Chart = ({
           },
           ticks: {
             beginAtZero: true,
-            display: true
+            display: true,
+            stepValue: 10,
+            max: 100
           }
         }
       ]
