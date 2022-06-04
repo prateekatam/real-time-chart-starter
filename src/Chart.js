@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import { makeStyles, useTheme } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
@@ -10,7 +10,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Chart = ({
-  data: dataProp,
+  data,
   labels,
   className,
   ...rest
@@ -18,27 +18,36 @@ const Chart = ({
   const classes = useStyles();
   const theme = useTheme();
 
-  const data = {
+  const beta = {
     datasets: [
       {
         backgroundColor: theme.palette.secondary.main,
-        data: dataProp,
-        barThickness: 12,
-        maxBarThickness: 10,
-        barPercentage: 0.9,
-        categoryPercentage: 1
-      }
+        // data: [167, 183, 192, 112, 133, 174, NaN, 110, 134, 140],
+        data: data,
+        fill: false,
+        tension: 0.1,
+        borderColor: 'rgb(75, 192, 192)',
+      },
+      // {
+      //   backgroundColor: theme.palette.secondary.main,
+      //   data: [NaN, NaN, NaN, NaN, NaN, 174, 100, 110, NaN, NaN],
+      //   fill: false,
+      //   tension: 0.1,
+      //   borderColor: 'rgb(192, 192, 75)',
+        
+      // }
     ],
+    // labels: ['J', 'A', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'],
     labels
   };
 
   const options = {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     animation: false,
     cornerRadius: 20,
     legend: {
-      display: false
+      display: true
     },
     layout: {
       padding: 0
@@ -46,26 +55,24 @@ const Chart = ({
     scales: {
       xAxes: [
         {
-          stacked: false,
           gridLines: {
-            display: false,
+            display: true,
             drawBorder: false
           },
           ticks: {
-            display: false
+            display: true
           }
         }
       ],
       yAxes: [
         {
-          stacked: true,
           gridLines: {
-            display: false,
+            display: true,
             drawBorder: false
           },
           ticks: {
             beginAtZero: true,
-            display: false
+            display: true
           }
         }
       ]
@@ -100,8 +107,8 @@ const Chart = ({
       className={clsx(classes.root, className)}
       {...rest}
     >
-      <Bar
-        data={data}
+      <Line
+        data={beta}
         options={options}
       />
     </div>

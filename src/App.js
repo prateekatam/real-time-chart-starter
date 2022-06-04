@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   Container,
   Box,
@@ -7,9 +8,7 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import clsx from 'clsx';
 import Chart from './Chart';
-import logo from './logo.svg'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,47 +19,69 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
+const BASEURL = "http://localhost:4000";
 
 const RealTimeChart = ({ className, ...rest }) => {
   const classes = useStyles();
-  const [data, setData] = useState([
-    136,
-    176,
-    116,
-    195,
-    98,
-    136,
-    145,
-    166,
-    167,
-    183
-  ]);
+  // const [data, setData] = useState([
+  //   136,
+  //   176,
+  //   116,
+  //   195,
+  //   98,
+  //   136,
+  //   145,
+  //   166,
+  //   167,
+  //   183, 
+  //   111
+  // ]);
 
-  const labels = data.map((value, i) => i);
+  const [data, setData] = useState([]);
+  const [labels, setLabels] = useState([]);
+
+  // const labels = data.map((value, i) => i);
+
+  const getRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+   
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  const getData = async () => {
+    await axios.get(BASEURL+"/shearerpos").then((res) =>  {
+      console.log(res)
+      setData(res.data.data)
+      setLabels(res.data.labels)
+    })
+    // setData((prevData) => {
+    //   const newData = [...prevData];
+    //   const random = getRandomInt(100, 200);
+    //   newData.shift();
+    //   newData.push(random);
+
+    //   return newData;
+    // })
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      getData()
+    }, 5000);
+    });
 
   return (
     <Container
-        maxWidth="sm"
+        maxWidth="md"
       >
         <Box
-          mb={4}
-          display="flex"
-          justifyContent="center"
-        >
-           <img
-          alt="Logo"
-          src={logo}
-          />
-        </Box>
-        <Box
           mb={8}
-          display="flex"
           justifyContent="center"
         >
           <Card
-      className={clsx(classes.root, className)}
-      {...rest}
+      // className={clsx(classes.root, className)}
+      // {...rest}
     >
       <CardHeader
         action={(
