@@ -10,7 +10,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Chart = ({
-  data,
+  fullData,
+  offlineData,
+  missingData,
   labels,
   className,
   ...rest
@@ -18,27 +20,36 @@ const Chart = ({
   const classes = useStyles();
   const theme = useTheme();
 
-  const beta = {
+  const data = {
     datasets: [
       {
         backgroundColor: theme.palette.secondary.main,
-        // data: [167, 183, 192, 112, 133, 174, NaN, 110, 134, 140],
-        data: data,
+        // data: [null,null,null,null,null,null,null,null,null,null],
+        data: fullData,
         fill: false,
         tension: 0.1,
-        borderColor: 'rgb(75, 192, 192)',
+        borderColor: 'rgb(75, 192, 75)',
+        label: "Online"
       },
-      // {
-      //   backgroundColor: theme.palette.secondary.main,
-      //   data: [NaN, NaN, NaN, NaN, NaN, 174, 100, 110, NaN, NaN],
-      //   fill: false,
-      //   tension: 0.1,
-      //   borderColor: 'rgb(192, 192, 75)',
-        
-      // }
+      {
+        backgroundColor: theme.palette.secondary.main,
+        data: missingData,
+        fill: false,
+        tension: 0.1,
+        borderColor: 'rgb(192, 75, 75)',
+        label: "Error"
+      },
+      {
+        // data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        data: offlineData,
+        fill: false,
+        tension: 0.1,
+        borderColor: 'rgb(50, 50, 50)',
+        label: "Offline"
+      }
     ],
-    // labels: ['J', 'A', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'],
     labels
+    // labels : ["2022-06-05 18:36:57.979378","2022-06-05 18:37:05.153165","2022-06-05 18:37:12.884701","2022-06-05 18:37:20.363613","2022-06-05 18:37:27.510527","2022-06-05 18:37:34.698813","2022-06-05 18:37:42.354620","2022-06-05 18:37:49.577139","2022-06-05 18:37:56.757860","2022-06-05 18:38:03.858060"]
   };
 
   const options = {
@@ -50,7 +61,7 @@ const Chart = ({
       display: true
     },
     layout: {
-      padding: 0
+      padding: 10
     },
     scales: {
       xAxes: [
@@ -102,8 +113,7 @@ const Chart = ({
         legend: () => {},
         title: () => {},
         label: (tooltipItem) => {
-          const label = `Views: ${tooltipItem.yLabel}`;
-
+          const label = `Position: ${tooltipItem.yLabel}`;
           return label;
         }
       }
@@ -116,7 +126,7 @@ const Chart = ({
       {...rest}
     >
       <Line
-        data={beta}
+        data={data}
         options={options}
       />
     </div>

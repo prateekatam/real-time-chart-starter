@@ -25,13 +25,18 @@ const RealTimeChart = ({ className, ...rest }) => {
   const classes = useStyles();
 
   const [data, setData] = useState({});
-  // const [labels, setLabels] = useState([]);
 
   const getData = async () => {
     await axios.get(BASEURL+"/shearerpos").then((res) =>  {
-      console.log(res)
-      setData({"data": res.data.data, "labels": res.data.labels})
-      // setLabels(res.data.labels)
+      console.log(res.data)
+      // console.log(res.data.offlineData)
+      // setData({
+      //   "data": res.data.data, 
+      //   "labels": res.data.labels, 
+      //   "offlineData": res.data.offlineData, 
+      //   "missingData": res.data.missingData
+      // })
+      setData(res.data)
     })
   };
 
@@ -63,11 +68,14 @@ const RealTimeChart = ({ className, ...rest }) => {
           </Typography>
         )}
         classes={{ action: classes.current }}
-        subheader="Page views per second"
-        title="Active users"
+        // subheader="Page views per second"
+        title="Shearer Position"
       />
       <Chart
-        data={data.data}
+        offlineData = {data.offlineData}
+        missingData = {data.missingData}
+        fullData = {data.data}
+        // data={data}
         labels={data.labels}
       />
     </Card>
